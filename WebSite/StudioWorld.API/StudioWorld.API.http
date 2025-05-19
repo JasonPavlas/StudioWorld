@@ -1,0 +1,6 @@
+@StudioWorld.API_HostAddress = http://localhost:5052
+
+GET {{StudioWorld.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
