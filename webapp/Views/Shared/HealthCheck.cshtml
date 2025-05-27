@@ -1,0 +1,54 @@
+@{
+    ViewData["Title"] = "Health Check";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Health Check</h1>
+    <div id="health-status" class="mt-4">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p>Checking system health...</p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/health')
+                .then(response => {
+                    if (response.ok) {
+                        return response.text().then(text => {
+                            const status = text || 'Healthy';
+                            const healthDiv = document.getElementById('health-status');
+                            healthDiv.innerHTML = `
+                                <div class="alert alert-success" role="alert">
+                                    <h4>All Systems Operational</h4>
+                                    <p>Status: ${status}</p>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        return response.text().then(text => {
+                            const healthDiv = document.getElementById('health-status');
+                            healthDiv.innerHTML = `
+                                <div class="alert alert-danger" role="alert">
+                                    <h4>System Issues Detected</h4>
+                                    <p>Status: ${text || 'Unhealthy'}</p>
+                                </div>
+                            `;
+                        });
+                    }
+                })
+                .catch(error => {
+                    const healthDiv = document.getElementById('health-status');
+                    healthDiv.innerHTML = `
+                        <div class="alert alert-danger" role="alert">
+                            <h4>Health Check Failed</h4>
+                            <p>Error: ${error.message}</p>
+                        </div>
+                    `;
+                });
+        });
+    </script>
+}

@@ -1,8 +1,65 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model webapp.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center hero-section">
+    <h1 class="display-4">StudioWorld</h1>
+    <p class="lead">Capturing the art of every moment</p>
+    
+    <div class="cta-container mt-5">
+        <h2>Help protect art by investing in it!</h2>
+        <a href="/Booking" class="btn btn-primary btn-lg mt-3">Book an Appointment</a>
+        <a href="/Training" class="btn btn-outline-primary btn-lg mt-3 ml-3">Access Training Programs</a>
+    </div>
 </div>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Our Services</h2>
+    
+    <div class="row">
+        @foreach (var category in Model.ServiceCategories)
+        {
+            <div class="col-md-3">
+                <div class="card mb-4">
+                    @if (!string.IsNullOrEmpty(category.ImageUrl))
+                    {
+                        <img src="@category.ImageUrl" class="card-img-top" alt="@category.Name">
+                    }
+                    <div class="card-body text-center">
+                        <h3 class="card-title">@category.Name</h3>
+                        <p class="card-text">@category.Description</p>
+                        <a href="/Services/@category.Slug" class="btn btn-outline-secondary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (Model.FeaturedServices.Any())
+{
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Featured Services</h2>
+        
+        <div class="row">
+            @foreach (var service in Model.FeaturedServices)
+            {
+                <div class="col-md-3">
+                    <div class="card mb-4">
+                        @if (!string.IsNullOrEmpty(service.ImageUrl))
+                        {
+                            <img src="@service.ImageUrl" class="card-img-top" alt="@service.Name">
+                        }
+                        <div class="card-body text-center">
+                            <h3 class="card-title">@service.Name</h3>
+                            <p class="card-text">@service.ShortDescription</p>
+                            <p class="price">$@service.BasePrice</p>
+                            <a href="/Services/Details/@service.Slug" class="btn btn-outline-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
